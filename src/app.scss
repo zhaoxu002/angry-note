@@ -1,0 +1,19 @@
+@import "~taro-ui/dist/style/index.scss";
+
+.page {
+  padding: 16px;
+}
+
+.marginBottom16 {
+  margin-bottom: 16px;
+}
+
+.fixedBottom {
+  box-sizing: border-box;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  padding: 16px;
+}
