@@ -10,14 +10,14 @@ const getOneBySearch = async (collection, query) => {
 };
 
 const getList = async (collection, query) => {
-  const result = await collection.where(query).orderBy('createTime', 'desc').get();
+  const result = await collection.where(query).orderBy('createAt', 'desc').get();
   return result.data;
 };
 
 const getListByPage = async (collection, query, curPage, limit) => {
   const result = await collection
     .where(query)
-    .orderBy('createTime', 'desc')
+    .orderBy('createAt', 'desc')
     .skip(curPage * limit)
     .limit(limit)
     .get();

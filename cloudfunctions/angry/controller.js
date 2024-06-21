@@ -25,7 +25,7 @@ const createAngry = async (event, _context) => {
 
     return createSuccessResponse();
   } catch (error) {
-    return createErrorResponse("create error");
+    return createErrorResponse("create error", error);
   }
 };
 const getAngries = async (event, _context) => {
@@ -40,7 +40,7 @@ const getAngries = async (event, _context) => {
     ]);
     return createPageSuccessResponse(list, total);
   } catch (error) {
-    return createErrorResponse("get list error");
+    return createErrorResponse("get list error", error);
   }
 };
 const deleteAngry = async (event, _context) => {
@@ -49,7 +49,7 @@ const deleteAngry = async (event, _context) => {
     daoUtils.deleteOne(angryCollection, id);
     return createSuccessResponse();
   } catch (error) {
-    return createErrorResponse("delete error");
+    return createErrorResponse("delete error", error);
   }
 };
 
@@ -61,7 +61,7 @@ const createReason = async (event, _context) => {
 
     return createSuccessResponse();
   } catch (error) {
-    return createErrorResponse("create error");
+    return createErrorResponse("create error", error);
   }
 };
 const getReasons = async (event, _context) => {
@@ -76,7 +76,7 @@ const getReasons = async (event, _context) => {
     ]);
     return createPageSuccessResponse(list, total);
   } catch (error) {
-    return createErrorResponse("get list error");
+    return createErrorResponse("get list error", error);
   }
 };
 const deleteReason = async (event, _context) => {
@@ -85,7 +85,7 @@ const deleteReason = async (event, _context) => {
     daoUtils.deleteOne(reasonCollection, id);
     return createSuccessResponse();
   } catch (error) {
-    return createErrorResponse("delete error");
+    return createErrorResponse("delete error", error);
   }
 };
 

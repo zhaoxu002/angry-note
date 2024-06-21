@@ -1,3 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '生气'
-})
+  navigationBarTitleText: "生气",
+  enablePullDownRefresh: true,
+});

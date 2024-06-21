@@ -1,34 +1,22 @@
 import { View } from "@tarojs/components";
-import { useState } from "react";
-import { useLoad } from "@tarojs/taro";
+import usePagination from "@/hooks/usePagination";
 import { getAngries } from "@/services/angry";
-import { AtCard, AtList, AtListItem } from "taro-ui";
+import { AtCard, AtList, AtListItem, AtLoadMore } from "taro-ui";
 import dayjs from "dayjs";
 import { Angry } from "@/types/angry";
-import { PageResponse } from "@/types/response";
 
 export default function Index() {
-  const [angries, setAngries] = useState<Angry[]>([]);
-  const [total, setTotal] = useState(0);
-
-  const fetchAngries = () => {
-    getAngries().then((res: PageResponse<Angry[]>) => {
-      const { data, total } = res.data;
-      setAngries(data);
-      setTotal(total);
-    });
-  };
-
-  useLoad(() => {
-    fetchAngries();
-  });
+  const {
+    data: angries,
+    status,
+  } = usePagination<Angry>(getAngries);
 
   return (
     <View>
       {angries.map((item) => (
         <AtCard
           key={item._id}
-          className='marginBottom16'
+          className="marginBottom16"
           title={dayjs(item.createAt).format("YYYY-MM-DD HH:mm:ss")}
           extra={item.character}
           note={`等级 ${item.rate}`}
@@ -40,6 +28,8 @@ export default function Index() {
           </AtList>
         </AtCard>
       ))}
+
+      <AtLoadMore status={status} />
     </View>
   );
 }

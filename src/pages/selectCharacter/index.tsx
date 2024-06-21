@@ -1,29 +1,34 @@
-import { useLoad, setStorage, reLaunch } from "@tarojs/taro"
-import { Button, View } from "@tarojs/components"
+import { useLoad, setStorage, reLaunch } from "@tarojs/taro";
+import { View } from "@tarojs/components";
+import { AtButton } from "taro-ui";
 
-import {KEY, Character} from '@/types/character'
+import { KEY, Character } from "@/types/character";
 
 export default function Index() {
-
   useLoad(() => {
-    console.log('Page loaded.')
-  })
+    console.log("Page loaded.");
+  });
 
   const onSelect = (character: Character) => {
     setStorage({
       key: KEY,
-      data: character
+      data: character,
     }).then(() => {
       reLaunch({
-        url: '/pages/index/index'
-      })
-    })
-  }
+        url: "/pages/index/index",
+      });
+    });
+  };
 
   return (
-    <View>
-      <Button onClick={() => onSelect(Character.ZX)}>zx</Button>
-      <Button onClick={() => onSelect(Character.WYB)}>wyb</Button>
+    <View className="page">
+      <AtButton
+        className="marginBottom16"
+        onClick={() => onSelect(Character.ZX)}
+      >
+        zx
+      </AtButton>
+      <AtButton onClick={() => onSelect(Character.WYB)}>wyb</AtButton>
     </View>
-  )
+  );
 }

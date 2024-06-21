@@ -6,24 +6,17 @@ import {
   AtInput,
   AtCheckbox,
   AtSlider,
+  AtLoadMore,
 } from "taro-ui";
-import {
-  useLoad,
-  usePullDownRefresh,
-  showModal,
-  showToast,
-  navigateBack,
-} from "@tarojs/taro";
+import { showModal, showToast, navigateBack } from "@tarojs/taro";
 import { Reason, ReasonType } from "@/types/angry";
-import { PageResponse } from "@/types/response";
 
 import { getReasons, createReason, createAngry } from "@/services/angry";
 import useCharacter from "@/hooks/useCharacter";
+import usePagination from "@/hooks/usePagination";
 
 export default function Index() {
   const [loading, setLoading] = useState(false);
-  const [reasons, setReasons] = useState<Reason[]>([]);
-  const [total, setTotal] = useState(0);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [newReason, setNewReason] = useState("");
@@ -31,22 +24,12 @@ export default function Index() {
 
   const character = useCharacter();
 
-  useLoad(() => {
-    fetchReasons();
-  });
-
-  usePullDownRefresh(() => {
-    fetchReasons();
-  });
-
-  const fetchReasons = () => {
-    getReasons().then((res: PageResponse<Reason[]>) => {
-      const { data, total } = res.data;
-      console.log("get reason", res.data);
-      setReasons(data);
-      setTotal(total);
-    });
-  };
+  const {
+    data: reasons,
+    total,
+    refresh,
+    status,
+  } = usePagination<Reason>(getReasons);
 
   const handleNewReason = () => {
     setOpen(true);
@@ -74,8 +57,9 @@ export default function Index() {
         console.error(err);
       })
       .finally(() => {
+        refresh();
+
         setLoading(false);
-        fetchReasons();
         setOpen(false);
       });
   };
@@ -90,8 +74,6 @@ export default function Index() {
       rate,
       type: ReasonType.Angry,
     };
-
-    console.log("pya", payload);
 
     showModal({
       title: "慎重",
@@ -144,7 +126,7 @@ export default function Index() {
           <AtInput
             name=""
             type="text"
-            title="理由"
+            placeholder="新理由"
             value={newReason}
             onChange={(val) => setNewReason(String(val))}
           ></AtInput>
@@ -166,6 +148,8 @@ export default function Index() {
           生气
         </AtButton>
       </View>
+
+      <AtLoadMore status={status} />
     </View>
   );
 }

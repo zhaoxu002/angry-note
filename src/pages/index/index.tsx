@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { AtButton } from "taro-ui";
 import { View, Text } from "@tarojs/components";
-import { useLoad, redirectTo, navigateTo, getStorage } from "@tarojs/taro";
+import { redirectTo, navigateTo } from "@tarojs/taro";
 
 import useCharacter from "@/hooks/useCharacter";
 import "./index.scss";

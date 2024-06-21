@@ -16,4 +16,5 @@
   left: 0;
   width: 100vw;
   padding: 16px;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
 }
