@@ -1,4 +1,3 @@
-import { Character } from "./character";
 
 export enum ReasonType {
   Angry = 1,
@@ -18,4 +17,5 @@ export interface Angry {
   character: string;
   rate: number;
   type: ReasonType;
+  comment?: string;
 }

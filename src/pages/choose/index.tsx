@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { View } from "@tarojs/components";
+import { CommonEventFunction, View } from "@tarojs/components";
 import {
   AtButton,
   AtFloatLayout,
   AtInput,
   AtCheckbox,
-  AtSlider,
+  // AtSlider,
+  AtRate,
   AtLoadMore,
 } from "taro-ui";
 import { showModal, showToast, navigateBack } from "@tarojs/taro";
@@ -21,6 +22,7 @@ export default function Index() {
   const [selected, setSelected] = useState<string[]>([]);
   const [newReason, setNewReason] = useState("");
   const [rate, setRate] = useState(1);
+  const [comment, setComment] = useState("");
 
   const character = useCharacter();
 
@@ -66,6 +68,13 @@ export default function Index() {
 
   const confirmAngry = () => {
     if (loading) return;
+    if (selected.length === 0) {
+      showToast({
+        title: "生气要有个理由啊",
+        icon: 'error'
+      });
+      return;
+    }
 
     const payload = {
       createAt: Date.now(),
@@ -73,6 +82,7 @@ export default function Index() {
       character,
       rate,
       type: ReasonType.Angry,
+      comment,
     };
 
     showModal({
@@ -142,7 +152,21 @@ export default function Index() {
       </AtFloatLayout>
 
       <View className="fixedBottom">
-        <AtSlider value={rate} onChange={(val) => setRate(val)}></AtSlider>
+        <AtInput
+          className="marginBottom16"
+          name="comment"
+          value={comment}
+          placeholder="备注"
+          onChange={(val) => setComment(String(val))}
+        />
+        <View className="flexCenter marginBottom16">
+          <AtRate
+            value={rate}
+            max={10}
+            size={30}
+            onChange={setRate as unknown as CommonEventFunction}
+          ></AtRate>
+        </View>
 
         <AtButton type="primary" disabled={loading} onClick={confirmAngry}>
           生气

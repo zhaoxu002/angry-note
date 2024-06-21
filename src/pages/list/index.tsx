@@ -6,10 +6,7 @@ import dayjs from "dayjs";
 import { Angry } from "@/types/angry";
 
 export default function Index() {
-  const {
-    data: angries,
-    status,
-  } = usePagination<Angry>(getAngries);
+  const { data: angries, status } = usePagination<Angry>(getAngries);
 
   return (
     <View>
@@ -21,11 +18,18 @@ export default function Index() {
           extra={item.character}
           note={`等级 ${item.rate}`}
         >
-          <AtList>
-            {item.reasons.map((reason) => (
-              <AtListItem key={reason._id} title={reason.text} />
-            ))}
-          </AtList>
+          <View>
+            <View className="marginBottom16">
+              <AtList>
+                {item.reasons.map((reason) => (
+                  <AtListItem key={reason._id} title={reason.text} />
+                ))}
+              </AtList>
+            </View>
+            {item.comment && (
+              <View className="marginBottom16">{item.comment}</View>
+            )}
+          </View>
         </AtCard>
       ))}
 
