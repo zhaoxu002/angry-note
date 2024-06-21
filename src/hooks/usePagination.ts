@@ -21,7 +21,7 @@ export default function usePagination<T>(fetchData: FetchData<T>) {
       .then((res) => {
         const { data, total } = res?.data;
 
-        setData(data);
+        setData((prev) => [...prev, ...data]);
         setTotal(total);
 
         if (data.length < pageSize) {
@@ -36,6 +36,7 @@ export default function usePagination<T>(fetchData: FetchData<T>) {
   const refresh = () => {
     setCurrent(1);
     setTotal(0);
+    setData([]);
     fetch(1);
   };
 
