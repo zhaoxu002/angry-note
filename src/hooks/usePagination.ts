@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { useReachBottom, usePullDownRefresh, useLoad } from "@tarojs/taro";
+import {
+  useReachBottom,
+  usePullDownRefresh,
+  useLoad,
+  stopPullDownRefresh,
+} from "@tarojs/taro";
 import { PageResponse } from "@/types/response";
 
 type FetchData<T> = (page: number) => Promise<PageResponse<T[]>>;
@@ -17,7 +22,7 @@ export default function usePagination<T>(fetchData: FetchData<T>) {
     setLoading(true);
     setStatus("loading");
 
-    fetchData(page)
+    return fetchData(page)
       .then((res) => {
         const { data, total } = res?.data;
 
@@ -37,7 +42,9 @@ export default function usePagination<T>(fetchData: FetchData<T>) {
     setCurrent(1);
     setTotal(0);
     setData([]);
-    fetch(1);
+    fetch(1)?.then(() => {
+      stopPullDownRefresh();
+    });
   };
 
   useLoad(() => {
